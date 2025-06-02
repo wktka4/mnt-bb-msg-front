@@ -10,10 +10,14 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
+import { useAuth } from "react-oidc-context";
+
 import InputMsg from "./_component/inputMsg";
 
 // ブロックを選択してから、メッセージを変更する画面
 export default function BlockPage() {
+
+  const auth = useAuth();
 
   // ブロック一覧
   const [blocks, setBlocks] = useState([]);
@@ -26,14 +30,10 @@ export default function BlockPage() {
     setSelectedBlock(code);
   }
 
-  // メッセージ設定画面を閉じる
-  const closeMsgConf = () => {
-    setSelectedBlock("");
-  }
-
   useEffect(
     // ブロック一覧を取得する
     () => {
+
       const b = [
         {
           code: "12345678901",
@@ -69,33 +69,35 @@ export default function BlockPage() {
 
   return (<>
     <main>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>code</th>
-            <th>name</th>
-            <th>category</th>
-            <th>latitude</th>
-            <th>longitude</th>
-            <th>buildingfloor</th>
-          </tr>
-        </thead>
-        <tbody>
-          {blocks.map((block, index) =>
-            <tr key={index}>
-              <td><a href="" onClick={(e) => selectedCode(e, block.code)}>{block.code}</a></td>
-              <td>{block.name}</td>
-              <td>{block.category}</td>
-              <td>{block.latitude}</td>
-              <td>{block.longitude}</td>
-              <td>{block.buildingfloor}</td>
+      {auth.isAuthenticated && <>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>code</th>
+              <th>name</th>
+              <th>category</th>
+              <th>latitude</th>
+              <th>longitude</th>
+              <th>buildingfloor</th>
             </tr>
-          )}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {blocks.map((block, index) =>
+              <tr key={index}>
+                <td><a href="" onClick={(e) => selectedCode(e, block.code)}>{block.code}</a></td>
+                <td>{block.name}</td>
+                <td>{block.category}</td>
+                <td>{block.latitude}</td>
+                <td>{block.longitude}</td>
+                <td>{block.buildingfloor}</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
 
-      <InputMsg selectedBlock={selectedBlock} setSelectedBlock={setSelectedBlock} />
+        <InputMsg selectedBlock={selectedBlock} setSelectedBlock={setSelectedBlock} />
 
+      </>}
     </main>
   </>);
 }

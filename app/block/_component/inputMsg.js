@@ -27,7 +27,7 @@ export default function InputMsg({
   }
 
   useEffect(
-    // ブロック一覧を取得する
+    // ブロックのメッセージを取得する
     () => {
       const b = [
         { category: "nomal", angle: 0, message: "test", reading: "testtest", file: "" },
