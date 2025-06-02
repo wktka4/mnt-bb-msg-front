@@ -12,7 +12,7 @@ export default function MsgPage() {
 
   return (<>
     <main>
-
+    <div>ここにループさせる</div>
     </main>
 
   </>);
